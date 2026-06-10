@@ -137,28 +137,38 @@ select {
   position: relative;
 }
 
-/* Safari ignora flex/grid sobre <button>: el + se centra con posicionamiento
-   absoluto, inmune a cualquier quirk de layout */
+/* El + se dibuja con pseudo-elementos CSS centrados por cajas (inset+margin:auto):
+   sin SVG, sin flex, sin baseline — nada que Safari pueda desalinear */
 .tab-add {
   position: relative;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   background: var(--accent);
-  color: var(--accent-ink);
   padding: 0;
   margin: 0 10px;
   align-self: center;
-  line-height: 0;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 38%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 32%, transparent);
 }
 
-.tab-add-inner {
+.tab-add::before,
+.tab-add::after {
+  content: '';
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: auto;
+  background: var(--accent-ink);
+  border-radius: 1.6px;
+}
+
+.tab-add::before {
+  width: 21px;
+  height: 3px;
+}
+
+.tab-add::after {
+  width: 3px;
+  height: 21px;
 }
 
 button svg {

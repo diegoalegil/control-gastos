@@ -164,7 +164,7 @@ export function Ajustes({
         {persisted === false &&
           ' Consejo: guarda una copia de seguridad de vez en cuando por si iOS libera espacio.'}
       </p>
-      <p className="settings-note">Control de Gastos · v1.0</p>
+      <p className="settings-note">Control de Gastos · v1.2</p>
 
       <AnimatePresence>
         {pendingRestore && (

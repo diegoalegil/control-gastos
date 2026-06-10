@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import type { ComponentType } from 'react'
-import { IconList, IconPie, IconPlus, IconRepeat, IconSliders } from './Icons'
+import { IconList, IconPie, IconRepeat, IconSliders } from './Icons'
 
 export type Tab = 'resumen' | 'movimientos' | 'recurrentes' | 'ajustes'
 
@@ -70,11 +70,7 @@ export function TabBar({
           transition={{ type: 'spring', stiffness: 500, damping: 26 }}
           onClick={onAdd}
           aria-label="Añadir movimiento"
-        >
-          <span className="tab-add-inner">
-            <IconPlus size={26} />
-          </span>
-        </motion.button>
+        />
         {RIGHT.map((t) => (
           <TabBtn key={t.id} {...t} active={active === t.id} onSelect={onSelect} />
         ))}
