@@ -58,20 +58,20 @@ export interface FixedItem {
 export const FIXED_ITEMS: FixedItem[] = [
   { key: 'inv', label: 'Inversión (parte fija)', categoryName: 'Inversión', iconId: 'sp500', type: 'ingreso', day: 1, defaultCents: 80000 },
   { key: 'sp500', label: 'Aportación S&P 500', categoryName: 'Ahorro e inversión', iconId: 'sp500', type: 'gasto', day: 1, defaultCents: 5000 },
-  // factura Vodafone de mayo 2026: 3 líneas (60GB + 2×30GB) + IGIC ≈ 26,04 €
-  { key: 'movil', label: 'Líneas Vodafone', categoryName: 'Móvil', iconId: 'vodafone', type: 'gasto', day: 1, defaultCents: 2604 },
+  // factura Vodafone 26,04 € — Diego quiere fijos sin decimales, redondeo hacia arriba
+  { key: 'movil', label: 'Líneas Vodafone', categoryName: 'Móvil', iconId: 'vodafone', type: 'gasto', day: 1, defaultCents: 2700 },
   { key: 'netflix', label: 'Netflix', categoryName: 'Suscripciones', iconId: 'netflix', type: 'gasto', day: 1, defaultCents: 1000 },
   { key: 'youtube', label: 'YouTube Premium', categoryName: 'Suscripciones', iconId: 'youtube', type: 'gasto', day: 1, defaultCents: 1000 },
   { key: 'amusic', label: 'Apple Music', categoryName: 'Suscripciones', iconId: 'applemusic', type: 'gasto', day: 1, defaultCents: 1800 },
   // base 90 €; los meses que suba a 180 se edita el movimiento generado (solo afecta a ese mes)
   { key: 'claude', label: 'Claude', categoryName: 'Suscripciones', iconId: 'claude', type: 'gasto', day: 1, defaultCents: 9000 },
-  { key: 'chatgpt', label: 'ChatGPT', categoryName: 'Suscripciones', iconId: 'chatgpt', type: 'gasto', day: 1 },
+  { key: 'chatgpt', label: 'ChatGPT', categoryName: 'Suscripciones', iconId: 'chatgpt', type: 'gasto', day: 1, defaultCents: 2300 },
   { key: 'gym', label: 'Gimnasio', categoryName: 'Gimnasio', iconId: 'gym', type: 'gasto', day: 1, defaultCents: 5400 },
-  // TV Samsung QLED: 28,11 €/cuota, 281,18 € pendientes en la factura de mayo ≈ 10 cuotas desde junio
-  { key: 'fintv', label: 'Financiación TV (Samsung QLED)', categoryName: 'Financiación', iconId: 'tv', type: 'gasto', day: 1, financed: true, defaultCents: 2811, defaultInstallments: 10 },
-  // iPhone 17 Pro Max: 1.299,03 € en 24 cuotas de 54,12 € (pedido 06/2026); canon
-  // digital 3,48 € + gestión 13,27 € van como pago único en la primera factura
-  { key: 'finmovil', label: 'Financiación iPhone 17 Pro Max', categoryName: 'Financiación', iconId: 'iphone', type: 'gasto', day: 1, financed: true, defaultCents: 5412, defaultInstallments: 24 },
+  // TV Samsung QLED: cuota real 28,11 € (→29 redondeado), 10 cuotas desde junio
+  { key: 'fintv', label: 'Financiación TV (Samsung QLED)', categoryName: 'Financiación', iconId: 'tv', type: 'gasto', day: 1, financed: true, defaultCents: 2900, defaultInstallments: 10 },
+  // iPhone 17 Pro Max: cuota real 54,12 € (→55 redondeado) × 24; canon digital
+  // 3,48 € + gestión 13,27 € van como pago único en la primera factura
+  { key: 'finmovil', label: 'Financiación iPhone 17 Pro Max', categoryName: 'Financiación', iconId: 'iphone', type: 'gasto', day: 1, financed: true, defaultCents: 5500, defaultInstallments: 24 },
 ]
 
 export const SAVINGS_RATE = 0.1

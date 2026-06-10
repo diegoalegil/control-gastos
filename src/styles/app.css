@@ -137,38 +137,30 @@ select {
   position: relative;
 }
 
-/* El + se dibuja con pseudo-elementos CSS centrados por cajas (inset+margin:auto):
-   sin SVG, sin flex, sin baseline — nada que Safari pueda desalinear */
+/* El + es un background-image centrado: el pintado de fondos no pasa por
+   layout, así que no hay motor de navegador capaz de descentrarlo */
 .tab-add {
-  position: relative;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: var(--accent);
   padding: 0;
   margin: 0 10px;
   align-self: center;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 32%, transparent);
+  background: var(--accent) var(--plus-icon) center / 24px 24px no-repeat;
+  box-shadow: 0 1px 5px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-.tab-add::before,
-.tab-add::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  background: var(--accent-ink);
-  border-radius: 1.6px;
+:root[data-theme='light'] {
+  --plus-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f7fafd' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
 }
 
-.tab-add::before {
-  width: 21px;
-  height: 3px;
+:root[data-theme='dark'] {
+  --plus-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23101e2c' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
 }
 
-.tab-add::after {
-  width: 3px;
-  height: 21px;
+/* icono+texto en botones: bajar 1px el icono para alinear con la altura óptica del texto */
+.btn svg {
+  transform: translateY(1px);
 }
 
 button svg {
