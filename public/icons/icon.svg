@@ -1,7 +1,7 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <rect width="512" height="512" fill="#f6f4ee"/>
   <!-- moneda -->
-  <circle cx="256" cy="284" r="150" fill="#c96342"/>
+  <circle cx="256" cy="284" r="150" fill="#3e6f9a"/>
   <circle cx="256" cy="284" r="150" fill="none" stroke="#2a2722" stroke-width="10"/>
   <!-- símbolo € -->
   <g stroke="#f6f4ee" stroke-width="32" stroke-linecap="round" fill="none">

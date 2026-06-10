@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { AnimatePresence } from 'motion/react'
 import { ConfirmSheet } from '../components/ConfirmSheet'
+import { FadeCard } from '../components/FadeCard'
 import { IconChevronRight, IconDownload, IconPlus, IconShare } from '../components/Icons'
 import { Segmented } from '../components/Segmented'
 import { exportBackup, parseBackup, restoreBackup } from '../lib/backup'
@@ -45,7 +46,7 @@ export function Ajustes({
     notify('Copia restaurada')
   }
 
-  const catGroup = (type: 'gasto' | 'ingreso', title: string) => {
+  const catGroup = (type: 'gasto' | 'ingreso', title: string, index: number) => {
     const list = categories
       .filter((c) => c.type === type)
       .sort((a, b) => Number(a.archived) - Number(b.archived) || a.order - b.order)
@@ -54,7 +55,7 @@ export function Ajustes({
         <div className="card-title" style={{ margin: '0 6px 8px' }}>
           {title}
         </div>
-        <div className="settings-group">
+        <FadeCard className="settings-group" index={index}>
           {list.map((c) => (
             <button
               key={c.id}
@@ -84,7 +85,7 @@ export function Ajustes({
               <IconChevronRight size={18} style={{ color: 'var(--ink-3)' }} />
             </button>
           ))}
-        </div>
+        </FadeCard>
       </>
     )
   }
@@ -96,7 +97,7 @@ export function Ajustes({
       <div className="card-title" style={{ margin: '0 6px 8px' }}>
         Apariencia
       </div>
-      <div className="card" style={{ padding: 12 }}>
+      <FadeCard style={{ padding: 12 }}>
         <Segmented<Theme>
           options={[
             { value: 'system', label: 'Sistema' },
@@ -106,10 +107,10 @@ export function Ajustes({
           value={theme}
           onChange={setTheme}
         />
-      </div>
+      </FadeCard>
 
-      {catGroup('gasto', 'Categorías de gasto')}
-      {catGroup('ingreso', 'Categorías de ingreso')}
+      {catGroup('gasto', 'Categorías de gasto', 1)}
+      {catGroup('ingreso', 'Categorías de ingreso', 2)}
 
       <button
         type="button"
@@ -123,7 +124,7 @@ export function Ajustes({
       <div className="card-title" style={{ margin: '0 6px 8px' }}>
         Tus datos
       </div>
-      <div className="settings-group">
+      <FadeCard className="settings-group" index={3}>
         <button type="button" className="row row-divided" onClick={() => void exportCsv()}>
           <span className="row-body">
             <span className="row-title">Exportar CSV</span>
@@ -145,7 +146,7 @@ export function Ajustes({
           </span>
           <IconDownload size={20} style={{ color: 'var(--accent)' }} />
         </button>
-      </div>
+      </FadeCard>
       <input
         ref={fileRef}
         type="file"

@@ -29,7 +29,13 @@ function TabBtn({
       onClick={() => onSelect(id)}
       aria-current={active ? 'page' : undefined}
     >
-      <Icon size={23} />
+      <motion.span
+        style={{ display: 'block', lineHeight: 0 }}
+        animate={active ? { scale: [1, 1.18, 1] } : { scale: 1 }}
+        transition={{ duration: 0.32, times: [0, 0.5, 1], ease: 'easeOut' }}
+      >
+        <Icon size={23} />
+      </motion.span>
       {label}
     </motion.button>
   )
@@ -58,7 +64,9 @@ export function TabBar({
           onClick={onAdd}
           aria-label="Añadir movimiento"
         >
-          <IconPlus size={26} />
+          <span className="tab-add-inner">
+            <IconPlus size={26} />
+          </span>
         </motion.button>
         {RIGHT.map((t) => (
           <TabBtn key={t.id} {...t} active={active === t.id} onSelect={onSelect} />

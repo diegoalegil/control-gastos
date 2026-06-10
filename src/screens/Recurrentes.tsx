@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { EmptyState } from '../components/EmptyState'
+import { FadeCard } from '../components/FadeCard'
 import { IconPlus } from '../components/Icons'
 import { IllusCiclo } from '../components/Illustrations'
 import { Switch } from '../components/Switch'
@@ -56,7 +57,7 @@ export function Recurrentes({
 
       {rules && rules.length > 0 && (
         <>
-          <div className="settings-group">
+          <FadeCard className="settings-group">
             {rules.map((r) => {
               const cat = catMap.get(r.categoryId)
               const next = nextOccurrence(r)
@@ -90,7 +91,7 @@ export function Recurrentes({
                 </div>
               )
             })}
-          </div>
+          </FadeCard>
 
           <p className="settings-note">
             Los movimientos se apuntan solos al abrir la app cuando llega su día.

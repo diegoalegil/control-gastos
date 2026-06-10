@@ -1,6 +1,7 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { EmptyState } from '../components/EmptyState'
+import { FadeCard } from '../components/FadeCard'
 import { IconSearch, IconTrash } from '../components/Icons'
 import { IllusRecibo } from '../components/Illustrations'
 import { db } from '../lib/db'
@@ -148,10 +149,10 @@ export function Movimientos({
         )
       )}
 
-      {groups.map(([date, list]) => {
+      {groups.map(([date, list], gi) => {
         const net = list.reduce((s, t) => s + (t.type === 'ingreso' ? t.amountCents : -t.amountCents), 0)
         return (
-          <section key={date}>
+          <FadeCard key={date} index={gi} className="">
             <div className="day-head">
               <h4>{dayLabel(date)}</h4>
               <span>{formatBalance(net)}</span>
@@ -188,7 +189,7 @@ export function Movimientos({
                 })}
               </AnimatePresence>
             </div>
-          </section>
+          </FadeCard>
         )
       })}
     </div>

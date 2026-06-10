@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { AnimatedAmount } from '../components/AnimatedAmount'
 import { DonutChart } from '../components/DonutChart'
 import { EmptyState } from '../components/EmptyState'
+import { FadeCard } from '../components/FadeCard'
 import { IconChevronLeft, IconChevronRight, IconPlus } from '../components/Icons'
 import { IllusPlanta } from '../components/Illustrations'
 import { MonthBars } from '../components/MonthBars'
@@ -87,7 +88,7 @@ export function Resumen({
         </motion.button>
       </div>
 
-      <div className="card">
+      <FadeCard>
         <div className="balance-label">Balance de {label.toLowerCase()}</div>
         <div className={`balance-amount${totals.balance < 0 ? ' neg' : ''}`}>
           <AnimatedAmount cents={totals.balance} format={formatBalance} />
@@ -106,10 +107,10 @@ export function Resumen({
             </div>
           </div>
         </div>
-      </div>
+      </FadeCard>
 
       {txs && txs.length === 0 && (
-        <div className="card">
+        <FadeCard index={1}>
           <EmptyState
             art={<IllusPlanta />}
             title={`Nada en ${label.toLowerCase()}`}
@@ -120,11 +121,11 @@ export function Resumen({
               </button>
             }
           />
-        </div>
+        </FadeCard>
       )}
 
       {segments.length > 0 && (
-        <div className="card">
+        <FadeCard index={1}>
           <div className="card-title">Gastos por categoría</div>
           <DonutChart key={ym} segments={segments}>
             <div className="v">{formatCents(totals.expense)}</div>
@@ -140,11 +141,11 @@ export function Resumen({
               </div>
             ))}
           </div>
-        </div>
+        </FadeCard>
       )}
 
       {budgets.length > 0 && (
-        <div className="card">
+        <FadeCard index={2}>
           <div className="card-title">Presupuestos de {label.toLowerCase()}</div>
           {budgets.map((c) => {
             const spent = totals.byCategory.get(c.id) ?? 0
@@ -171,13 +172,13 @@ export function Resumen({
               </div>
             )
           })}
-        </div>
+        </FadeCard>
       )}
 
-      <div className="card">
+      <FadeCard index={3}>
         <div className="card-title">Últimos 6 meses</div>
         {bars && <MonthBars data={bars} selected={ym} onSelect={setYm} />}
-      </div>
+      </FadeCard>
     </div>
   )
 }

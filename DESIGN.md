@@ -13,11 +13,12 @@ Reglas de diseño de esta app. Toda pantalla, componente o cambio visual debe cu
 
 ## Paleta
 
-Neutros cálidos, papel y arcilla. **Un solo acento**: terracota.
+Neutros cálidos, papel y arcilla. **Un solo acento**: azul sobrio (el color favorito de Diego).
 
 - Claro: fondo `#F6F4EE` (papel), superficies `#FFFDF9`, tinta `#2A2722`.
 - Oscuro: fondo `#1B1A17` (carbón cálido), superficies `#26241F`, tinta `#EDEAE3`.
-- Acento: terracota `#C96342` (claro) / `#D97757` (oscuro). Solo para marca, acciones y selección.
+- Acento: azul acero `#3E6F9A` (claro) / `#7DA9D2` con tinta oscura encima (oscuro). Solo para marca,
+  acciones y selección. Ojo: azul apagado y serio — jamás derivar hacia morado/índigo ni gradientes.
 - Semántica: verde sobrio solo para ingresos (`+`), rojo sobrio solo para presupuesto excedido y acciones destructivas. Los gastos van en tinta normal con signo `−`: la semántica no se decora.
 - Categorías: 10 tonos apagados (arcilla, ocre, mostaza, oliva, salvia, petróleo, lavanda gris, malva, rosa palo, topo) usados solo en chips de categoría y segmentos del donut.
 
