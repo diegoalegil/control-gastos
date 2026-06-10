@@ -55,7 +55,8 @@ export interface FixedItem {
 export const FIXED_ITEMS: FixedItem[] = [
   { key: 'inv', label: 'Inversión (parte fija)', categoryName: 'Inversión', type: 'ingreso', day: 1, defaultCents: 80000 },
   { key: 'sp500', label: 'Aportación S&P 500', categoryName: 'Ahorro e inversión', type: 'gasto', day: 1, defaultCents: 5000 },
-  { key: 'movil', label: 'Móvil (Vodafone)', categoryName: 'Móvil', type: 'gasto', day: 1 },
+  // factura Vodafone de mayo 2026: 3 líneas (60GB + 2×30GB) + IGIC ≈ 26,04 €
+  { key: 'movil', label: 'Líneas Vodafone', categoryName: 'Móvil', type: 'gasto', day: 1, defaultCents: 2604 },
   { key: 'netflix', label: 'Netflix', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
   { key: 'youtube', label: 'YouTube Premium', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
   { key: 'amusic', label: 'Apple Music', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
@@ -63,7 +64,8 @@ export const FIXED_ITEMS: FixedItem[] = [
   { key: 'chatgpt', label: 'ChatGPT', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
   { key: 'gym', label: 'Gimnasio', categoryName: 'Gimnasio', type: 'gasto', day: 1 },
   // ambas van dentro de la factura Vodafone; el iPhone empieza este mes (cuota 1 de 24)
-  { key: 'fintv', label: 'Financiación TV', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true },
+  // TV Samsung QLED: 28,11 €/cuota, 281,18 € pendientes en la factura de mayo ≈ 10 cuotas desde junio
+  { key: 'fintv', label: 'Financiación TV (Samsung QLED)', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true, defaultCents: 2811, defaultInstallments: 10 },
   { key: 'finmovil', label: 'Financiación iPhone', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true, defaultInstallments: 24 },
 ]
 
