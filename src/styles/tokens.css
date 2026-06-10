@@ -21,6 +21,10 @@
   --bar-neg: #c9c2b4;
   --illus-paper: #ede7d9;
   --scrim: rgba(31, 28, 23, 0.42);
+  --glass-bg: rgba(255, 253, 249, 0.6);
+  --glass-edge: rgba(42, 39, 34, 0.1);
+  --glass-hl: rgba(255, 255, 255, 0.65);
+  --glass-shadow: 0 8px 28px rgba(42, 39, 34, 0.16);
 }
 
 :root[data-theme='dark'] {
@@ -44,6 +48,10 @@
   --bar-neg: #57534a;
   --illus-paper: #353229;
   --scrim: rgba(0, 0, 0, 0.55);
+  --glass-bg: rgba(40, 38, 34, 0.55);
+  --glass-edge: rgba(237, 234, 227, 0.14);
+  --glass-hl: rgba(255, 255, 255, 0.09);
+  --glass-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
 }
 
 :root {
@@ -63,5 +71,5 @@
   --radius-control: 13px;
   --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue',
     sans-serif;
-  --tabbar-h: 76px;
+  --tabbar-h: 66px;
 }

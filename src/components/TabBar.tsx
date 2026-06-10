@@ -29,14 +29,21 @@ function TabBtn({
       onClick={() => onSelect(id)}
       aria-current={active ? 'page' : undefined}
     >
+      {active && (
+        <motion.span
+          className="tab-pill"
+          layoutId="tab-pill"
+          transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+        />
+      )}
       <motion.span
         style={{ display: 'block', lineHeight: 0 }}
         animate={active ? { scale: [1, 1.18, 1] } : { scale: 1 }}
         transition={{ duration: 0.32, times: [0, 0.5, 1], ease: 'easeOut' }}
       >
-        <Icon size={23} />
+        <Icon size={22} />
       </motion.span>
-      {label}
+      <span>{label}</span>
     </motion.button>
   )
 }
@@ -52,7 +59,7 @@ export function TabBar({
 }) {
   return (
     <nav className="tabbar">
-      <div className="tabbar-inner">
+      <div className="tabbar-inner glass">
         {LEFT.map((t) => (
           <TabBtn key={t.id} {...t} active={active === t.id} onSelect={onSelect} />
         ))}

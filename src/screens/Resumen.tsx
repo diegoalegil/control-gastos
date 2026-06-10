@@ -59,7 +59,7 @@ export function Resumen({
       <div className="month-nav">
         <motion.button
           type="button"
-          className="month-nav-arrow"
+          className="month-nav-arrow glass"
           whileTap={{ scale: 0.88 }}
           transition={spring}
           onClick={() => setYm(addMonths(ym, -1))}
@@ -67,7 +67,7 @@ export function Resumen({
         >
           <IconChevronLeft />
         </motion.button>
-        <div className="month-nav-label">
+        <div className="month-nav-label glass">
           {label}
           <input
             type="month"
@@ -78,7 +78,7 @@ export function Resumen({
         </div>
         <motion.button
           type="button"
-          className="month-nav-arrow"
+          className="month-nav-arrow glass"
           whileTap={{ scale: 0.88 }}
           transition={spring}
           onClick={() => setYm(addMonths(ym, 1))}

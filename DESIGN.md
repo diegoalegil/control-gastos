@@ -8,7 +8,10 @@ Reglas de diseño de esta app. Toda pantalla, componente o cambio visual debe cu
 2. **Letter-spacing exagerado** en etiquetas mayúsculas. `letter-spacing` se queda en `normal` (máximo `0.01em` en casos puntuales).
 3. **Badges tipo "Live"** con puntito de estado dentro de píldoras translúcidas.
 4. **Gradientes radiales morados/índigo** de fondo. Nada de morado como ambiente.
-5. Glassmorphism genérico (blur + transparencia como decoración).
+5. Glassmorphism genérico (blur + transparencia como decoración de cards de contenido).
+   Excepción deliberada: **Liquid Glass al estilo iOS solo en el chrome** — tab bar flotante,
+   sheets, toasts y navegación pegajosa usan `.glass` (blur + saturate + borde y brillo superior).
+   El contenido (cards, listas) sigue siendo opaco siempre.
 6. Sombras dramáticas. Elevación con cambio de fondo y bordes sutiles, no con sombras de 40px.
 
 ## Paleta
