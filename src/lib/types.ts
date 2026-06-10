@@ -16,8 +16,10 @@ export interface Transaction {
 export interface Category {
   id: string
   name: string
-  /** Emoji que representa la categoría */
+  /** Emoji heredado (solo como reserva; la UI usa iconId) */
   icon: string
+  /** Icono SVG del registro CatIcons */
+  iconId?: string
   /** Índice 1-10 dentro de la paleta de categorías */
   color: number
   type: TxType
@@ -31,6 +33,8 @@ export interface RecurringRule {
   type: TxType
   amountCents: number
   categoryId: string
+  /** Icono SVG propio (p. ej. la N de Netflix); si falta, el de la categoría */
+  iconId?: string
   note?: string
   /** 1-31; si el mes es más corto se usa el último día */
   dayOfMonth: number

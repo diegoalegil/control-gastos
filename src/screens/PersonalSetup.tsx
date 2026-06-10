@@ -1,8 +1,12 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
+import { CatBubble } from '../components/CatBubble'
 import { setSetting } from '../lib/db'
 import { centsToInput, parseEuros } from '../lib/money'
-import { applyPersonalPlan, FIXED_ITEMS } from '../lib/personal'
+import { applyPersonalPlan, FIXED_ITEMS, PERSONAL_CATS } from '../lib/personal'
+
+const colorFor = (categoryName: string) =>
+  PERSONAL_CATS.find((c) => c.name === categoryName)?.color
 
 /**
  * Asistente de configuración personal: importes de los fijos de Diego.
@@ -55,6 +59,7 @@ export function PersonalSetup({ onDone }: { onDone: (materialized: number) => vo
       <div className="settings-group" style={{ marginBottom: 16 }}>
         {FIXED_ITEMS.map((item) => (
           <div key={item.key} className="row row-divided">
+            <CatBubble iconId={item.iconId} color={colorFor(item.categoryName)} size={36} />
             <span className="row-body">
               <span className="row-title">{item.label}</span>
               <span className="row-sub">

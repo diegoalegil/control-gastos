@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import type { CSSProperties } from 'react'
+import { CatBubble } from './CatBubble'
 import type { Category } from '../lib/types'
 
 export function CategoryPicker({
@@ -22,9 +22,7 @@ export function CategoryPicker({
           className={`cat-chip${c.id === value ? ' selected' : ''}`}
           onClick={() => onChange(c.id)}
         >
-          <span className="cat-bubble" style={{ '--bubble': `var(--cat-${c.color})` } as CSSProperties}>
-            {c.icon}
-          </span>
+          <CatBubble category={c} size={40} />
           <span>{c.name}</span>
         </motion.button>
       ))}

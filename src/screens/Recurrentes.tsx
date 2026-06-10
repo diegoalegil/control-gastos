@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { CatBubble } from '../components/CatBubble'
 import { EmptyState } from '../components/EmptyState'
 import { FadeCard } from '../components/FadeCard'
 import { IconPlus } from '../components/Icons'
@@ -80,12 +80,7 @@ export function Recurrentes({
                     style={{ padding: 0, border: 'none', flex: 1, minWidth: 0 }}
                     onClick={() => onEdit(r)}
                   >
-                    <span
-                      className="cat-bubble"
-                      style={{ '--bubble': `var(--cat-${cat?.color ?? 10})` } as CSSProperties}
-                    >
-                      {cat?.icon ?? '❓'}
-                    </span>
+                    <CatBubble category={cat} iconId={r.iconId} />
                     <span className="row-body">
                       <span className="row-title">{r.note || cat?.name || 'Sin categoría'}</span>
                       <span className="row-sub">

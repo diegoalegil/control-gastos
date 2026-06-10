@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
+import { CatIcon, ICON_IDS } from '../components/CatIcons'
 import { Segmented } from '../components/Segmented'
 import { db, uid } from '../lib/db'
 import { centsToInput, parseEuros } from '../lib/money'
@@ -18,7 +19,7 @@ export function CategoryForm({
 }) {
   const [type, setType] = useState<TxType>(edit?.type ?? 'gasto')
   const [name, setName] = useState(edit?.name ?? '')
-  const [icon, setIcon] = useState(edit?.icon ?? '🏷️')
+  const [iconId, setIconId] = useState(edit?.iconId ?? 'sparkles')
   const [color, setColor] = useState(edit?.color ?? 1)
   const [budget, setBudget] = useState(centsToInput(edit?.monthlyBudgetCents))
 
@@ -30,7 +31,8 @@ export function CategoryForm({
     if (edit) {
       await db.categories.update(edit.id, {
         name: trimmed,
-        icon: icon.trim() || '🏷️',
+        icon: '',
+        iconId,
         color,
         monthlyBudgetCents: budgetCents,
       })
@@ -40,7 +42,8 @@ export function CategoryForm({
       await db.categories.add({
         id: uid(),
         name: trimmed,
-        icon: icon.trim() || '🏷️',
+        icon: '',
+        iconId,
         color,
         type,
         monthlyBudgetCents: budgetCents,
@@ -78,34 +81,35 @@ export function CategoryForm({
         </div>
       )}
 
-      <div className="field" style={{ display: 'flex', gap: 10 }}>
-        <div style={{ width: 76 }}>
-          <label className="label" htmlFor="cat-icon">
-            Emoji
-          </label>
-          <input
-            id="cat-icon"
-            className="input"
-            style={{ textAlign: 'center', fontSize: 22 }}
-            type="text"
-            maxLength={4}
-            value={icon}
-            onChange={(e) => setIcon(e.target.value)}
-          />
-        </div>
-        <div style={{ flex: 1 }}>
-          <label className="label" htmlFor="cat-name">
-            Nombre
-          </label>
-          <input
-            id="cat-name"
-            className="input"
-            type="text"
-            placeholder="P. ej. Mascotas"
-            maxLength={24}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+      <div className="field">
+        <label className="label" htmlFor="cat-name">
+          Nombre
+        </label>
+        <input
+          id="cat-name"
+          className="input"
+          type="text"
+          placeholder="P. ej. Mascotas"
+          maxLength={28}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+
+      <div className="field">
+        <span className="label">Icono</span>
+        <div className="icon-grid">
+          {ICON_IDS.map((id) => (
+            <button
+              key={id}
+              type="button"
+              className={`icon-cell${iconId === id ? ' selected' : ''}`}
+              aria-label={`Icono ${id}`}
+              onClick={() => setIconId(id)}
+            >
+              <CatIcon id={id} size={20} />
+            </button>
+          ))}
         </div>
       </div>
 

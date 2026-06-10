@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
+import { CatBubble } from '../components/CatBubble'
 import { ConfirmSheet } from '../components/ConfirmSheet'
 import { FadeCard } from '../components/FadeCard'
 import { IconChevronRight, IconDownload, IconPlus, IconShare } from '../components/Icons'
@@ -66,12 +67,7 @@ export function Ajustes({
               style={c.archived ? { opacity: 0.45 } : undefined}
               onClick={() => onEditCategory(c)}
             >
-              <span
-                className="cat-bubble"
-                style={{ '--bubble': `var(--cat-${c.color})` } as CSSProperties}
-              >
-                {c.icon}
-              </span>
+              <CatBubble category={c} />
               <span className="row-body">
                 <span className="row-title">{c.name}</span>
                 <span className="row-sub">
@@ -179,7 +175,7 @@ export function Ajustes({
         {persisted === false &&
           ' Consejo: guarda una copia de seguridad de vez en cuando por si iOS libera espacio.'}
       </p>
-      <p className="settings-note">Control de Gastos · v1.7</p>
+      <p className="settings-note">Control de Gastos · v2.0</p>
 
       <AnimatePresence>
         {pendingRestore && (

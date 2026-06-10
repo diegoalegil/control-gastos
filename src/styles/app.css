@@ -271,6 +271,40 @@ button.row:active {
   background: color-mix(in srgb, var(--bubble, var(--cat-10)) 20%, transparent);
 }
 
+.cat-bubble svg {
+  display: block;
+  color: color-mix(in srgb, var(--bubble, var(--cat-10)) 55%, var(--ink));
+}
+
+/* selector de iconos (sin emojis) */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.icon-cell {
+  position: relative;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1.5px solid transparent;
+  color: var(--ink-2);
+}
+
+.icon-cell svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-cell.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
 /* ============ Botones ============ */
 
 .btn {
@@ -755,6 +789,9 @@ input[type='month'].input {
 .budget-name {
   flex: 1;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .budget-nums {

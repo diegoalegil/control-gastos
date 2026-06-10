@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion } from 'motion/react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AnimatedAmount } from '../components/AnimatedAmount'
+import { CatBubble } from '../components/CatBubble'
 import { DonutChart } from '../components/DonutChart'
 import { EmptyState } from '../components/EmptyState'
 import { FadeCard } from '../components/FadeCard'
@@ -41,7 +42,8 @@ export function Resumen({
         id: catId,
         value,
         color: `var(--cat-${cat?.color ?? 10})`,
-        name: cat ? `${cat.icon} ${cat.name}` : 'Sin categoría',
+        name: cat?.name ?? 'Sin categoría',
+        cat,
       }
     })
   }, [totals, catMap])
@@ -187,7 +189,7 @@ export function Resumen({
           <div>
             {segments.map((s) => (
               <div key={s.id} className="legend-row">
-                <span className="legend-dot" style={{ background: s.color }} />
+                <CatBubble category={s.cat} size={28} />
                 <span className="legend-name">{s.name}</span>
                 <span className="legend-pct">{Math.round((s.value / totals.expense) * 100)}%</span>
                 <span className="legend-amount">{formatCents(s.value)}</span>
@@ -209,7 +211,7 @@ export function Resumen({
               <div key={c.id} className="budget-row">
                 <div className="budget-head">
                   <span className="budget-name">
-                    {c.icon} {c.name}
+                    <CatBubble category={c} size={24} /> {c.name}
                   </span>
                   {left >= 0 ? (
                     <span className="budget-nums">

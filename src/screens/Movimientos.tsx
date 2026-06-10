@@ -1,5 +1,6 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { CatBubble } from '../components/CatBubble'
 import { EmptyState } from '../components/EmptyState'
 import { FadeCard } from '../components/FadeCard'
 import { IconSearch, IconTrash } from '../components/Icons'
@@ -7,7 +8,7 @@ import { IllusRecibo } from '../components/Illustrations'
 import { db } from '../lib/db'
 import { dayLabel } from '../lib/dates'
 import { formatBalance, formatSigned } from '../lib/money'
-import { useAllTransactions } from '../state/hooks'
+import { useAllTransactions, useRecurringRules } from '../state/hooks'
 import type { Category, Transaction } from '../lib/types'
 
 type TypeFilter = 'todos' | 'gasto' | 'ingreso'
@@ -51,6 +52,11 @@ export function Movimientos({
   onDeleted: (tx: Transaction) => void
 }) {
   const txs = useAllTransactions()
+  const rules = useRecurringRules()
+  const ruleIcon = useMemo(
+    () => new Map((rules ?? []).filter((r) => r.iconId).map((r) => [r.id, r.iconId as string])),
+    [rules],
+  )
   const [q, setQ] = useState('')
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('todos')
   const [catFilter, setCatFilter] = useState<string | null>(null)
@@ -128,7 +134,7 @@ export function Movimientos({
                 className={`chip${catFilter === c.id ? ' active' : ''}`}
                 onClick={() => setCatFilter(catFilter === c.id ? null : c.id)}
               >
-                {c.icon} {c.name}
+                {c.name}
               </button>
             ))}
           </div>
@@ -164,12 +170,10 @@ export function Movimientos({
                   return (
                     <SwipeRow key={t.id} onDelete={() => void deleteTx(t)}>
                       <button type="button" className="row row-divided" onClick={() => onEdit(t)}>
-                        <span
-                          className="cat-bubble"
-                          style={{ '--bubble': `var(--cat-${cat?.color ?? 10})` } as CSSProperties}
-                        >
-                          {cat?.icon ?? '❓'}
-                        </span>
+                        <CatBubble
+                          category={cat}
+                          iconId={t.recurringId ? ruleIcon.get(t.recurringId) : undefined}
+                        />
                         <span className="row-body">
                           <span className="row-title">{t.note || cat?.name || 'Sin categoría'}</span>
                           {(() => {

@@ -6,7 +6,7 @@ import { TabBar, type Tab } from './components/TabBar'
 import { ToastHost, type ToastData } from './components/Toast'
 import { db, getSetting, setSetting } from './lib/db'
 import { materializeRecurring } from './lib/recurring'
-import { seedIfNeeded } from './lib/seed'
+import { ensureIconIds, seedIfNeeded } from './lib/seed'
 import { Ajustes } from './screens/Ajustes'
 import { CategoryForm } from './screens/CategoryForm'
 import { Movimientos } from './screens/Movimientos'
@@ -73,6 +73,7 @@ export default function App() {
     let cancelled = false
     void (async () => {
       await seedIfNeeded()
+      await ensureIconIds()
       const n = await materializeRecurring()
       if (cancelled) return
       setReady(true)
