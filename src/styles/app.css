@@ -159,9 +159,9 @@ select {
   --plus-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23101e2c' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
 }
 
-/* icono+texto en botones: bajar el icono para alinear con la altura óptica del texto */
+/* icono+texto en botones: medio píxel de compensación óptica */
 .btn svg {
-  transform: translateY(1.5px);
+  transform: translateY(0.5px);
 }
 
 button svg {
@@ -825,7 +825,9 @@ input[type='month'].input {
   padding: 28px 24px 30px;
 }
 
-.empty svg {
+/* solo la ilustración (hija directa): que el margen no se cuele en los
+   iconos de los botones de dentro — el famoso '+' descentrado */
+.empty > svg {
   margin-bottom: 14px;
   color: var(--ink);
 }
