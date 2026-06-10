@@ -14,7 +14,11 @@ export function PersonalSetup({ onDone }: { onDone: (materialized: number) => vo
       FIXED_ITEMS.filter((i) => i.defaultCents).map((i) => [i.key, centsToInput(i.defaultCents)]),
     ),
   )
-  const [cuotas, setCuotas] = useState<Record<string, string>>({})
+  const [cuotas, setCuotas] = useState<Record<string, string>>(() =>
+    Object.fromEntries(
+      FIXED_ITEMS.filter((i) => i.defaultInstallments).map((i) => [i.key, String(i.defaultInstallments)]),
+    ),
+  )
   const [applying, setApplying] = useState(false)
 
   const filled = FIXED_ITEMS.filter((i) => parseEuros(values[i.key] ?? '') !== undefined)

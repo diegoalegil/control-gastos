@@ -47,6 +47,8 @@ export interface FixedItem {
   defaultCents?: number
   /** Financiación: pide nº de cuotas y termina (y se borra) sola */
   financed?: boolean
+  /** Cuotas conocidas de antemano, pre-rellenadas en el asistente */
+  defaultInstallments?: number
 }
 
 // el ritual del día 1: entran los 800 €, salen 50 € al S&P 500 y se paga Vodafone
@@ -60,8 +62,9 @@ export const FIXED_ITEMS: FixedItem[] = [
   { key: 'claude', label: 'Claude', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
   { key: 'chatgpt', label: 'ChatGPT', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
   { key: 'gym', label: 'Gimnasio', categoryName: 'Gimnasio', type: 'gasto', day: 1 },
+  // ambas van dentro de la factura Vodafone; el iPhone empieza este mes (cuota 1 de 24)
   { key: 'fintv', label: 'Financiación TV', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true },
-  { key: 'finmovil', label: 'Financiación móvil', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true },
+  { key: 'finmovil', label: 'Financiación iPhone', categoryName: 'Financiación', type: 'gasto', day: 1, financed: true, defaultInstallments: 24 },
 ]
 
 export const SAVINGS_RATE = 0.1
