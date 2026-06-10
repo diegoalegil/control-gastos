@@ -5,7 +5,8 @@ import { CategoryPicker } from '../components/CategoryPicker'
 import { ConfirmSheet } from '../components/ConfirmSheet'
 import { Segmented } from '../components/Segmented'
 import { db, uid } from '../lib/db'
-import { currentMonth } from '../lib/dates'
+import { addMonths, currentMonth, monthDiff, monthLabel } from '../lib/dates'
+import { formatCents } from '../lib/money'
 import { materializeRecurring } from '../lib/recurring'
 import type { Category, RecurringRule, TxType } from '../lib/types'
 
@@ -23,7 +24,9 @@ export function RuleForm({
   const [note, setNote] = useState(edit?.note ?? '')
   const [day, setDay] = useState(edit?.dayOfMonth ?? 1)
   const [startMonth, setStartMonth] = useState(edit?.startMonth ?? currentMonth())
-  const [endMonth, setEndMonth] = useState(edit?.endMonth ?? '')
+  const [installments, setInstallments] = useState(
+    edit?.endMonth ? String(monthDiff(edit.startMonth, edit.endMonth) + 1) : '',
+  )
   const [confirming, setConfirming] = useState(false)
   const [saving, setSaving] = useState(false)
 
@@ -33,6 +36,9 @@ export function RuleForm({
   )
   const [categoryId, setCategoryId] = useState<string | null>(edit?.categoryId ?? null)
   const selected = categoryId && typeCats.some((c) => c.id === categoryId) ? categoryId : null
+
+  const nInstallments = Math.max(Math.round(Number(installments)) || 0, 0)
+  const endMonth = nInstallments > 0 ? addMonths(startMonth, nInstallments - 1) : ''
 
   const save = async () => {
     if (!selected || cents === 0 || saving) return
@@ -130,19 +136,29 @@ export function RuleForm({
           />
         </div>
         <div style={{ flex: 1 }}>
-          <label className="label" htmlFor="rule-end">
-            Hasta (opcional)
+          <label className="label" htmlFor="rule-installments">
+            Cuotas (opcional)
           </label>
           <input
-            id="rule-end"
+            id="rule-installments"
             className="input"
-            type="month"
-            min={startMonth}
-            value={endMonth}
-            onChange={(e) => setEndMonth(e.target.value)}
+            type="number"
+            inputMode="numeric"
+            min={1}
+            placeholder="Sin fin"
+            value={installments}
+            onChange={(e) => setInstallments(e.target.value)}
           />
         </div>
       </div>
+
+      {nInstallments > 0 && (
+        <p className="settings-note" style={{ margin: '-6px 2px 14px' }}>
+          Última cuota en {monthLabel(endMonth)}
+          {cents > 0 && <> · total {formatCents(nInstallments * cents)}</>}. Al pagarla, esta
+          recurrente se eliminará sola.
+        </p>
+      )}
 
       <motion.button
         type="button"

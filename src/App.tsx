@@ -10,6 +10,7 @@ import { seedIfNeeded } from './lib/seed'
 import { Ajustes } from './screens/Ajustes'
 import { CategoryForm } from './screens/CategoryForm'
 import { Movimientos } from './screens/Movimientos'
+import { PersonalSetup } from './screens/PersonalSetup'
 import { Recurrentes } from './screens/Recurrentes'
 import { Resumen } from './screens/Resumen'
 import { RuleForm } from './screens/RuleForm'
@@ -23,6 +24,7 @@ type SheetState =
   | { kind: 'tx'; edit?: Transaction }
   | { kind: 'rule'; edit?: RecurringRule }
   | { kind: 'category'; edit?: Category; usageCount: number }
+  | { kind: 'personal' }
   | null
 
 const recurrentesMsg = (n: number) =>
@@ -43,6 +45,12 @@ export default function App() {
     [],
     null as boolean | null,
   )
+  const personalSetup = useLiveQuery(
+    async () => (await getSetting<string>('personalSetup')) ?? 'pending',
+    [],
+    null as string | null,
+  )
+  const personalOffered = useRef(false)
 
   const notify = (msg: string, actionLabel?: string, onAction?: () => void) => {
     clearTimeout(toastTimer.current)
@@ -76,6 +84,14 @@ export default function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // ofrecer la configuración personal una sola vez, tras la bienvenida
+  useEffect(() => {
+    if (ready && welcomed === true && personalSetup === 'pending' && !personalOffered.current) {
+      personalOffered.current = true
+      setSheet({ kind: 'personal' })
+    }
+  }, [ready, welcomed, personalSetup])
 
   if (!ready || welcomed === null) return null
 
@@ -143,6 +159,7 @@ export default function App() {
               notify={notify}
               onEditCategory={(c) => void openCategory(c)}
               onAddCategory={() => void openCategory()}
+              onOpenPersonal={() => setSheet({ kind: 'personal' })}
             />
           )}
         </motion.div>
@@ -181,6 +198,16 @@ export default function App() {
             onClose={closeSheet}
           >
             <CategoryForm edit={sheet.edit} usageCount={sheet.usageCount} onSaved={savedAndClose} />
+          </Sheet>
+        )}
+        {sheet?.kind === 'personal' && (
+          <Sheet key="sheet-personal" title="Hecha a tu medida" onClose={closeSheet}>
+            <PersonalSetup
+              onDone={(n) => {
+                closeSheet()
+                notify(n > 0 ? `Configuración aplicada · ${recurrentesMsg(n).toLowerCase()}` : 'Configuración aplicada')
+              }}
+            />
           </Sheet>
         )}
       </AnimatePresence>

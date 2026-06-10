@@ -6,8 +6,8 @@ import { IllusCiclo } from '../components/Illustrations'
 import { Switch } from '../components/Switch'
 import { db } from '../lib/db'
 import { addMonths, currentMonth, shortDate } from '../lib/dates'
-import { formatSigned } from '../lib/money'
-import { materializeRecurring, nextOccurrence } from '../lib/recurring'
+import { formatCents, formatSigned } from '../lib/money'
+import { materializeRecurring, nextOccurrence, remainingInstallments } from '../lib/recurring'
 import { useRecurringRules } from '../state/hooks'
 import type { Category, RecurringRule } from '../lib/types'
 
@@ -61,6 +61,17 @@ export function Recurrentes({
             {rules.map((r) => {
               const cat = catMap.get(r.categoryId)
               const next = nextOccurrence(r)
+              const remaining = remainingInstallments(r)
+              const pendientes = remaining !== null ? Math.round((remaining * r.amountCents) / 100) : 0
+              const state = !r.active
+                ? 'en pausa'
+                : remaining !== null
+                  ? remaining > 0
+                    ? `${remaining} ${remaining === 1 ? 'cuota' : 'cuotas'} · faltan ${pendientes} €`
+                    : 'finalizada'
+                  : next
+                    ? `próximo ${shortDate(next)}`
+                    : 'finalizada'
               return (
                 <div key={r.id} className="row row-divided">
                   <button
@@ -78,12 +89,8 @@ export function Recurrentes({
                     <span className="row-body">
                       <span className="row-title">{r.note || cat?.name || 'Sin categoría'}</span>
                       <span className="row-sub">
-                        {formatSigned(r.amountCents, r.type)} · día {r.dayOfMonth}
-                        {r.active
-                          ? next
-                            ? ` · próximo ${shortDate(next)}`
-                            : ' · finalizada'
-                          : ' · en pausa'}
+                        {formatSigned(r.amountCents, r.type)}
+                        {remaining === null ? ` · día ${r.dayOfMonth}` : ''} · {state}
                       </span>
                     </span>
                   </button>

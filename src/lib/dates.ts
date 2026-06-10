@@ -29,6 +29,13 @@ export function daysInMonth(ym: string): number {
   return new Date(y, m, 0).getDate()
 }
 
+/** Meses entre dos 'YYYY-MM': monthDiff('2026-06','2026-08') -> 2 */
+export function monthDiff(a: string, b: string): number {
+  const [ya, ma] = a.split('-').map(Number)
+  const [yb, mb] = b.split('-').map(Number)
+  return yb * 12 + mb - (ya * 12 + ma)
+}
+
 /** Día clavado al largo del mes: clampDay('2026-02', 31) -> '2026-02-28' */
 export function clampDay(ym: string, day: number): string {
   return `${ym}-${pad(Math.min(day, daysInMonth(ym)))}`

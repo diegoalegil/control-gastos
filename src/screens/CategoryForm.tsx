@@ -2,24 +2,10 @@ import { useState } from 'react'
 import { motion } from 'motion/react'
 import { Segmented } from '../components/Segmented'
 import { db, uid } from '../lib/db'
+import { centsToInput, parseEuros } from '../lib/money'
 import type { Category, TxType } from '../lib/types'
 
 const COLORS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-/** '450' | '450,50' -> céntimos; vacío -> undefined */
-function parseEuros(s: string): number | undefined {
-  const clean = s.trim().replace(/[€\s.]/g, '').replace(',', '.')
-  if (!clean) return undefined
-  const n = Number(clean)
-  if (!Number.isFinite(n) || n <= 0) return undefined
-  return Math.round(n * 100)
-}
-
-function centsToInput(cents: number | undefined): string {
-  if (!cents) return ''
-  const euros = cents / 100
-  return Number.isInteger(euros) ? String(euros) : euros.toFixed(2).replace('.', ',')
-}
 
 export function CategoryForm({
   edit,

@@ -628,6 +628,26 @@ input[type='month'].input {
   gap: 10px;
 }
 
+.available-sub {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  margin-top: -8px;
+}
+
+.available-day {
+  font-size: 14.5px;
+  color: var(--ink-2);
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.available-day strong {
+  color: var(--pos);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
 .stat {
   flex: 1;
   background: var(--surface-2);

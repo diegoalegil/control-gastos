@@ -28,3 +28,19 @@ export function formatBalance(cents: number): string {
 export function formatKeypad(cents: number): string {
   return eur.format(cents / 100)
 }
+
+/** '450' | '450,50' | '1.450,50 €' -> céntimos; vacío o inválido -> undefined */
+export function parseEuros(s: string): number | undefined {
+  const clean = s.trim().replace(/[€\s.]/g, '').replace(',', '.')
+  if (!clean) return undefined
+  const n = Number(clean)
+  if (!Number.isFinite(n) || n <= 0) return undefined
+  return Math.round(n * 100)
+}
+
+/** Céntimos -> valor editable para un input: 1250 -> '12,50'; enteros sin decimales */
+export function centsToInput(cents: number | undefined): string {
+  if (!cents) return ''
+  const euros = cents / 100
+  return Number.isInteger(euros) ? String(euros) : euros.toFixed(2).replace('.', ',')
+}

@@ -15,11 +15,13 @@ export function Ajustes({
   notify,
   onEditCategory,
   onAddCategory,
+  onOpenPersonal,
 }: {
   categories: Category[]
   notify: (msg: string) => void
   onEditCategory: (c: Category) => void
   onAddCategory: () => void
+  onOpenPersonal: () => void
 }) {
   const [theme, setTheme] = useTheme()
   const fileRef = useRef<HTMLInputElement>(null)
@@ -122,9 +124,22 @@ export function Ajustes({
       </button>
 
       <div className="card-title" style={{ margin: '0 6px 8px' }}>
-        Tus datos
+        Hecha para ti
       </div>
       <FadeCard className="settings-group" index={3}>
+        <button type="button" className="row row-divided" onClick={onOpenPersonal}>
+          <span className="row-body">
+            <span className="row-title">Configuración personal</span>
+            <span className="row-sub">Tus categorías, fijos y presupuestos de un toque</span>
+          </span>
+          <IconChevronRight size={18} style={{ color: 'var(--ink-3)' }} />
+        </button>
+      </FadeCard>
+
+      <div className="card-title" style={{ margin: '0 6px 8px' }}>
+        Tus datos
+      </div>
+      <FadeCard className="settings-group" index={4}>
         <button type="button" className="row row-divided" onClick={() => void exportCsv()}>
           <span className="row-body">
             <span className="row-title">Exportar CSV</span>
@@ -164,7 +179,7 @@ export function Ajustes({
         {persisted === false &&
           ' Consejo: guarda una copia de seguridad de vez en cuando por si iOS libera espacio.'}
       </p>
-      <p className="settings-note">Control de Gastos · v1.2</p>
+      <p className="settings-note">Control de Gastos · v1.3</p>
 
       <AnimatePresence>
         {pendingRestore && (

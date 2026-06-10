@@ -1,5 +1,5 @@
 import { db, uid } from './db'
-import { addMonths, clampDay, monthOf, todayStr } from './dates'
+import { addMonths, clampDay, monthDiff, monthOf, todayStr } from './dates'
 import type { RecurringRule } from './types'
 
 /**
@@ -49,6 +49,12 @@ export async function materializeRecurring(now = todayStr()): Promise<number> {
         ym = addMonths(ym, 1)
       }
 
+      // financiaciones terminadas: última cuota generada y mes de fin ya pasado -> se borra sola
+      if (rule.endMonth && rule.endMonth < nowYm && materializedUpTo && materializedUpTo >= rule.endMonth) {
+        await db.recurring.delete(rule.id)
+        continue
+      }
+
       if (materializedUpTo !== rule.lastMaterializedMonth) {
         await db.recurring.update(rule.id, { lastMaterializedMonth: materializedUpTo })
       }
@@ -56,6 +62,13 @@ export async function materializeRecurring(now = todayStr()): Promise<number> {
   })
 
   return created
+}
+
+/** Cuotas pendientes de una regla con fin (incluye las aún no generadas), o null si no termina. */
+export function remainingInstallments(rule: RecurringRule): number | null {
+  if (!rule.endMonth) return null
+  const from = rule.lastMaterializedMonth ?? addMonths(rule.startMonth, -1)
+  return Math.max(monthDiff(from, rule.endMonth), 0)
 }
 
 /** Fecha de la próxima ejecución de una regla, o null si ya terminó. */
