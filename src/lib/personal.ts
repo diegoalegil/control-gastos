@@ -29,7 +29,8 @@ const CATS: CatSpec[] = [
   { name: 'Financiación', icon: '💳', color: 10, type: 'gasto' },
   { name: 'Gimnasio', icon: '🏋️', color: 5, type: 'gasto' },
   { name: 'Gasolina', icon: '⛽', color: 2, type: 'gasto', budgetCents: 12000 },
-  { name: 'Coche (taller y seguro)', icon: '🔧', color: 3, type: 'gasto' },
+  // gasto irregular del W204: aceite, frenos, reparaciones... sin presupuesto mensual
+  { name: 'Mantenimiento de la bestia', icon: '☮️', color: 3, type: 'gasto' },
   { name: 'Viajes', icon: '✈️', color: 5, type: 'gasto' },
   { name: 'Regalos', icon: '🎁', color: 9, type: 'gasto' },
   { name: 'Ahorro e inversión', icon: '📊', color: 4, type: 'gasto' },
@@ -57,8 +58,8 @@ export const FIXED_ITEMS: FixedItem[] = [
   { key: 'sp500', label: 'Aportación S&P 500', categoryName: 'Ahorro e inversión', type: 'gasto', day: 1, defaultCents: 5000 },
   // factura Vodafone de mayo 2026: 3 líneas (60GB + 2×30GB) + IGIC ≈ 26,04 €
   { key: 'movil', label: 'Líneas Vodafone', categoryName: 'Móvil', type: 'gasto', day: 1, defaultCents: 2604 },
-  { key: 'netflix', label: 'Netflix', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
-  { key: 'youtube', label: 'YouTube Premium', categoryName: 'Suscripciones', type: 'gasto', day: 1 },
+  { key: 'netflix', label: 'Netflix', categoryName: 'Suscripciones', type: 'gasto', day: 1, defaultCents: 1000 },
+  { key: 'youtube', label: 'YouTube Premium', categoryName: 'Suscripciones', type: 'gasto', day: 1, defaultCents: 1000 },
   { key: 'amusic', label: 'Apple Music', categoryName: 'Suscripciones', type: 'gasto', day: 1, defaultCents: 1800 },
   // base 90 €; los meses que suba a 180 se edita el movimiento generado (solo afecta a ese mes)
   { key: 'claude', label: 'Claude', categoryName: 'Suscripciones', type: 'gasto', day: 1, defaultCents: 9000 },
