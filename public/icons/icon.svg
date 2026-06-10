@@ -1,15 +1,23 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" fill="#f6f4ee"/>
+  <!-- fondo azul a sangre: iOS redondea las esquinas -->
+  <rect width="512" height="512" fill="#3a688f"/>
   <!-- moneda -->
-  <circle cx="256" cy="284" r="150" fill="#3e6f9a"/>
-  <circle cx="256" cy="284" r="150" fill="none" stroke="#2a2722" stroke-width="10"/>
+  <circle cx="256" cy="296" r="146" fill="#f6f4ee" fill-opacity="0.07"/>
+  <circle cx="256" cy="296" r="146" fill="none" stroke="#f6f4ee" stroke-width="21"/>
   <!-- símbolo € -->
-  <g stroke="#f6f4ee" stroke-width="32" stroke-linecap="round" fill="none">
-    <path d="M322 230a92 92 0 1 0 0 108"/>
-    <path d="M186 264h78M186 300h78"/>
+  <g stroke="#f6f4ee" stroke-width="33" stroke-linecap="round" fill="none">
+    <path d="M318 244a89 89 0 1 0 0 104"/>
+    <path d="M190 278h74M190 314h74"/>
   </g>
   <!-- brote -->
-  <path d="M256 132c-2-26-8-44-22-62" stroke="#2a2722" stroke-width="11" stroke-linecap="round" fill="none"/>
-  <path d="M236 72c-12-22-32-31-56-30 10 26 30 36 56 30Z" fill="#8aa265" stroke="#2a2722" stroke-width="10" stroke-linejoin="round"/>
-  <path d="M247 96c20-6 30-19 34-42-22 6-32 20-34 42Z" fill="#6fa48d" stroke="#2a2722" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M256 152c-1-25-7-45-22-64" stroke="#f6f4ee" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M236 90c-13-24-35-35-62-33 11 28 33 39 62 33Z" fill="#9db877" stroke="#f6f4ee" stroke-width="11" stroke-linejoin="round"/>
+  <path d="M247 113c23-6 35-21 39-47-25 6-37 22-39 47Z" fill="#82bda0" stroke="#f6f4ee" stroke-width="11" stroke-linejoin="round"/>
+  <!-- destellos a mano -->
+  <g stroke="#f6f4ee" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.55">
+    <path d="M104 220c6-12 8-22 7-36"/>
+    <path d="M84 252c-8-7-17-11-28-13"/>
+    <path d="M408 200c-6 12-8 22-7 36"/>
+    <path d="M428 168c8 7 17 11 28 13"/>
+  </g>
 </svg>
