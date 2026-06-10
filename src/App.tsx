@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Sheet } from './components/Sheet'
+import { SplashIntro } from './components/SplashIntro'
 import { TabBar, type Tab } from './components/TabBar'
 import { ToastHost, type ToastData } from './components/Toast'
 import { db, getSetting, setSetting } from './lib/db'
@@ -34,6 +35,10 @@ export default function App() {
   useTheme()
   const [tab, setTab] = useState<Tab>('resumen')
   const [ready, setReady] = useState(false)
+  // splash de arranque: una vez por carga (no al cambiar de pestaña); ?noanim lo salta
+  const [splashDone, setSplashDone] = useState(() =>
+    new URLSearchParams(location.search).has('noanim'),
+  )
   const [sheet, setSheet] = useState<SheetState>(null)
   const [toast, setToast] = useState<ToastData | null>(null)
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -94,7 +99,9 @@ export default function App() {
     }
   }, [ready, welcomed, personalSetup])
 
-  if (!ready || welcomed === null) return null
+  const splash = !splashDone && <SplashIntro onDone={() => setSplashDone(true)} />
+
+  if (!ready || welcomed === null) return <>{splash}</>
 
   const closeSheet = () => setSheet(null)
 
@@ -214,6 +221,7 @@ export default function App() {
       </AnimatePresence>
 
       <ToastHost toast={toast} />
+      {splash}
     </div>
   )
 }
