@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#f6f4ee"/>
+  <!-- moneda -->
+  <circle cx="256" cy="284" r="150" fill="#c96342"/>
+  <circle cx="256" cy="284" r="150" fill="none" stroke="#2a2722" stroke-width="10"/>
+  <!-- símbolo € -->
+  <g stroke="#f6f4ee" stroke-width="32" stroke-linecap="round" fill="none">
+    <path d="M322 230a92 92 0 1 0 0 108"/>
+    <path d="M186 264h78M186 300h78"/>
+  </g>
+  <!-- brote -->
+  <path d="M256 132c-2-26-8-44-22-62" stroke="#2a2722" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <path d="M236 72c-12-22-32-31-56-30 10 26 30 36 56 30Z" fill="#8aa265" stroke="#2a2722" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M247 96c20-6 30-19 34-42-22 6-32 20-34 42Z" fill="#6fa48d" stroke="#2a2722" stroke-width="10" stroke-linejoin="round"/>
+</svg>

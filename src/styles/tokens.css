@@ -1,0 +1,67 @@
+/* Tokens de diseño — ver DESIGN.md. Un acento, neutros cálidos, nada de morado ambiental. */
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f6f4ee;
+  --surface: #fffdf9;
+  --surface-2: #ece9e0;
+  --ink: #2a2722;
+  --ink-2: #6e6960;
+  --ink-3: #a39d92;
+  --line: rgba(42, 39, 34, 0.08);
+  --line-strong: rgba(42, 39, 34, 0.17);
+  --accent: #c96342;
+  --accent-ink: #fff8f3;
+  --accent-soft: rgba(201, 99, 66, 0.13);
+  --pos: #3d7a4e;
+  --pos-soft: rgba(61, 122, 78, 0.13);
+  --neg: #b3382c;
+  --neg-soft: rgba(179, 56, 44, 0.12);
+  --bar-pos: #88ae93;
+  --bar-neg: #c9c2b4;
+  --illus-paper: #ede7d9;
+  --scrim: rgba(31, 28, 23, 0.42);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1b1a17;
+  --surface: #252320;
+  --surface-2: #32302a;
+  --ink: #edeae3;
+  --ink-2: #a6a095;
+  --ink-3: #6f6a60;
+  --line: rgba(237, 234, 227, 0.09);
+  --line-strong: rgba(237, 234, 227, 0.19);
+  --accent: #d97757;
+  --accent-ink: #fff8f3;
+  --accent-soft: rgba(217, 119, 87, 0.16);
+  --pos: #84bd92;
+  --pos-soft: rgba(132, 189, 146, 0.14);
+  --neg: #e2604b;
+  --neg-soft: rgba(226, 96, 75, 0.14);
+  --bar-pos: #5f8a6b;
+  --bar-neg: #57534a;
+  --illus-paper: #353229;
+  --scrim: rgba(0, 0, 0, 0.55);
+}
+
+:root {
+  /* Paleta de categorías: tonos apagados, válidos en claro y oscuro */
+  --cat-1: #c56c5a;
+  --cat-2: #c98f4a;
+  --cat-3: #bca14b;
+  --cat-4: #8aa265;
+  --cat-5: #6fa48d;
+  --cat-6: #5f94a8;
+  --cat-7: #8189b5;
+  --cat-8: #a57f9f;
+  --cat-9: #c2798f;
+  --cat-10: #a18d78;
+
+  --radius-card: 20px;
+  --radius-control: 13px;
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+  --tabbar-h: 76px;
+}
