@@ -2,22 +2,25 @@
 // Uso:   node visual-check.mjs [baseURL]
 // Setup: npm i -D playwright && npx playwright install chromium
 //
-// Variante propia del repo: contexto limpio por viewport (IndexedDB vacío),
-// pasa bienvenida y asistente, captura las 4 pestañas vacías, siembra datos
-// aplicando la configuración personal y vuelve a capturar con datos.
+// Cobertura: 4 viewports en claro + 2 en oscuro; bienvenida; 4 pestañas en
+// vacío y con datos (siembra aplicando la configuración personal); sheets
+// (nuevo, categoría, asistente, edición); estado presupuesto-excedido.
 import { chromium } from 'playwright'
 import { mkdirSync, rmSync } from 'fs'
 
 const baseURL = process.argv[2] || 'http://localhost:5174/control-gastos/?noanim'
 
-const VIEWPORTS = [
+const LIGHT = [
   { name: 'iphone-se', width: 375, height: 667 },
   { name: 'iphone-14', width: 390, height: 844 },
   { name: 'iphone-max', width: 430, height: 932 },
-  { name: 'desktop', width: 1280, height: 800 }, // que no se rompa en grande
+  { name: 'desktop', width: 1280, height: 800 },
+]
+const DARK = [
+  { name: 'iphone-se', width: 375, height: 667 },
+  { name: 'iphone-14', width: 390, height: 844 },
 ]
 
-// las vistas no cambian la URL: se navega pulsando la tab bar
 const TABS = ['Resumen', 'Movimientos', 'Recurrentes', 'Ajustes']
 
 rmSync('shots', { recursive: true, force: true })
@@ -35,76 +38,97 @@ async function clickIfVisible(page, locator) {
   return false
 }
 
-async function captureTabs(page, vpName, suffix) {
-  for (const tab of TABS) {
-    await page.getByRole('button', { name: tab }).first().click()
-    await page.waitForTimeout(400)
-    await page.screenshot({ path: `shots/${tab.toLowerCase()}-${suffix}-${vpName}.png`, fullPage: true })
-    console.log(`  ✓ ${tab.toLowerCase()}-${suffix}-${vpName}`)
-  }
-}
-
-for (const vp of VIEWPORTS) {
-  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } })
+async function run(vp, scheme) {
+  const tag = scheme === 'dark' ? `${vp.name}-dark` : vp.name
+  const context = await browser.newContext({
+    viewport: { width: vp.width, height: vp.height },
+    colorScheme: scheme,
+  })
   const page = await context.newPage()
   try {
     await page.goto(baseURL, { waitUntil: 'networkidle', timeout: 30000 })
-  } catch {
-    /* networkidle puede no estabilizarse; seguimos */
-  }
+  } catch {}
   await page.waitForTimeout(500)
 
-  // bienvenida (primer arranque) y asistente personal
+  const shoot = async (name, fullPage = true) => {
+    await page.screenshot({ path: `shots/${name}-${tag}.png`, fullPage })
+    console.log(`  ✓ ${name}-${tag}`)
+  }
+  const captureTabs = async (suffix) => {
+    for (const t of TABS) {
+      await page.getByRole('button', { name: t }).first().click()
+      await page.waitForTimeout(400)
+      await shoot(`${t.toLowerCase()}-${suffix}`)
+    }
+  }
+
+  // bienvenida (solo una vez por esquema, en el viewport canónico)
+  if (vp.name === 'iphone-14') await shoot('welcome', false)
   await clickIfVisible(page, page.getByRole('button', { name: 'Empezar' }))
   await clickIfVisible(page, page.getByRole('button', { name: 'Ahora no' }))
 
-  await captureTabs(page, vp.name, 'vacio')
+  await captureTabs('vacio')
 
-  // siembra: aplicar la configuración personal (categorías + fijos reales)
+  // siembra: aplicar la configuración personal
   await page.getByRole('button', { name: 'Ajustes' }).first().click()
   await page.waitForTimeout(350)
   await clickIfVisible(page, page.getByText('Configuración personal'))
   const applied = await clickIfVisible(page, page.getByRole('button', { name: /Aplicar/ }))
-  if (applied) {
-    await page.waitForTimeout(900)
-    await captureTabs(page, vp.name, 'datos')
-  } else {
-    console.log(`  ! ${vp.name}: no se pudo sembrar datos`)
+  if (!applied) {
+    console.log(`  ! ${tag}: no se pudo sembrar datos`)
+    await context.close()
+    return
   }
+  await page.waitForTimeout(900)
+  await captureTabs('datos')
 
-  // sheets (solo en el viewport canónico): capturas de VIEWPORT, no fullPage,
-  // para ver el layout real de keypad, selector de iconos y asistente
-  if (vp.name === 'iphone-14' || vp.name === 'iphone-se') {
-    await page.waitForTimeout(4300) // dejar morir la toast: capturas de sheet limpias
-    const shoot = (name) => page.screenshot({ path: `shots/${name}-${vp.name}.png` })
-    const closeSheet = async () => {
-      await page.mouse.click(vp.width / 2, 40) // backdrop
-      await page.waitForTimeout(350)
-    }
+  // estados y sheets, solo en los iPhone
+  if (vp.name === 'iphone-se' || vp.name === 'iphone-14') {
+    await page.waitForTimeout(4300) // dejar morir la toast
 
+    // presupuesto excedido: 250 € en Comida fuera (presupuesto 60 €)
     await page.getByRole('button', { name: 'Añadir movimiento' }).first().click()
     await page.waitForTimeout(450)
-    await shoot('sheet-nuevo')
-    console.log(`  ✓ sheet-nuevo-${vp.name}`)
-    await closeSheet()
+    for (const d of ['2', '5', '0', '0', '0']) {
+      await page.locator('.keypad .key', { hasText: new RegExp(`^${d}$`) }).click()
+    }
+    await page.locator('.cat-chip', { hasText: 'Comida fuera' }).click()
+    await shoot('sheet-nuevo', false)
+    await page.getByRole('button', { name: 'Guardar' }).click()
+    await page.waitForTimeout(600)
+    await page.getByRole('button', { name: 'Resumen' }).first().click()
+    await page.waitForTimeout(400)
+    await shoot('resumen-overbudget')
 
+    // sheet de edición: abrir el movimiento recién creado
+    await page.getByRole('button', { name: 'Movimientos' }).first().click()
+    await page.waitForTimeout(400)
+    await page.locator('.row', { hasText: 'Comida fuera' }).first().click()
+    await page.waitForTimeout(450)
+    await shoot('sheet-editar', false)
+    await page.mouse.click(vp.width / 2, 40)
+    await page.waitForTimeout(350)
+
+    // sheet nueva categoría (selector de iconos)
     await page.getByRole('button', { name: 'Ajustes' }).first().click()
     await page.waitForTimeout(350)
     await page.getByRole('button', { name: /Añadir categoría/ }).click()
     await page.waitForTimeout(450)
-    await shoot('sheet-categoria')
-    console.log(`  ✓ sheet-categoria-${vp.name}`)
-    await closeSheet()
+    await shoot('sheet-categoria', false)
+    await page.mouse.click(vp.width / 2, 40)
+    await page.waitForTimeout(350)
 
+    // asistente
     await clickIfVisible(page, page.getByText('Configuración personal'))
     await page.waitForTimeout(450)
-    await shoot('sheet-asistente')
-    console.log(`  ✓ sheet-asistente-${vp.name}`)
-    await closeSheet()
+    await shoot('sheet-asistente', false)
   }
 
   await context.close()
 }
+
+for (const vp of LIGHT) await run(vp, 'light')
+for (const vp of DARK) await run(vp, 'dark')
 
 await browser.close()
 console.log('\n✓ Listo. Capturas en ./shots')
