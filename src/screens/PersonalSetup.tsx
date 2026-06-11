@@ -44,7 +44,7 @@ export function PersonalSetup({ onDone }: { onDone: (materialized: number) => vo
 
   const skip = async () => {
     await setSetting('personalSetup', 'skipped')
-    onDone(0)
+    onDone(-1) // -1: omitido, sin toast
   }
 
   return (

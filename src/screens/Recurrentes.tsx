@@ -43,16 +43,18 @@ export function Recurrentes({
       <h1 className="screen-title">Recurrentes</h1>
 
       {rules && rules.length === 0 && (
-        <EmptyState
-          art={<IllusCiclo />}
-          title="Nada se repite todavía"
-          caption="Nómina, alquiler, suscripciones… créalas una vez y se apuntarán solas cada mes."
-          action={
-            <button type="button" className="btn btn-small" onClick={onAdd}>
-              <IconPlus size={18} /> Nueva recurrente
-            </button>
-          }
-        />
+        <div className="empty-page">
+          <EmptyState
+            art={<IllusCiclo />}
+            title="Nada se repite todavía"
+            caption="Nómina, alquiler, suscripciones… créalas una vez y se apuntarán solas cada mes."
+            action={
+              <button type="button" className="btn btn-small" onClick={onAdd}>
+                <IconPlus size={18} /> Nueva recurrente
+              </button>
+            }
+          />
+        </div>
       )}
 
       {rules && rules.length > 0 && (

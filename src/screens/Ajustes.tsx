@@ -55,7 +55,7 @@ export function Ajustes({
       .sort((a, b) => Number(a.archived) - Number(b.archived) || a.order - b.order)
     return (
       <>
-        <div className="card-title" style={{ margin: '0 6px 8px' }}>
+        <div className="card-title section-title">
           {title}
         </div>
         <FadeCard className="settings-group" index={index}>
@@ -92,7 +92,7 @@ export function Ajustes({
     <div className="screen">
       <h1 className="screen-title">Ajustes</h1>
 
-      <div className="card-title" style={{ margin: '0 6px 8px' }}>
+      <div className="card-title section-title">
         Apariencia
       </div>
       <FadeCard style={{ padding: 12 }}>
@@ -119,7 +119,7 @@ export function Ajustes({
         <IconPlus size={19} /> Añadir categoría
       </button>
 
-      <div className="card-title" style={{ margin: '0 6px 8px' }}>
+      <div className="card-title section-title">
         Hecha para ti
       </div>
       <FadeCard className="settings-group" index={3}>
@@ -132,7 +132,7 @@ export function Ajustes({
         </button>
       </FadeCard>
 
-      <div className="card-title" style={{ margin: '0 6px 8px' }}>
+      <div className="card-title section-title">
         Tus datos
       </div>
       <FadeCard className="settings-group" index={4}>
@@ -175,7 +175,7 @@ export function Ajustes({
         {persisted === false &&
           ' Consejo: guarda una copia de seguridad de vez en cuando por si iOS libera espacio.'}
       </p>
-      <p className="settings-note">Control de Gastos · v2.5</p>
+      <p className="settings-note">Control de Gastos · v2.6</p>
 
       <AnimatePresence>
         {pendingRestore && (

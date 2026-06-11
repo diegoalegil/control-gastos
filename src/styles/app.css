@@ -185,6 +185,16 @@ button svg {
   margin-bottom: 12px;
 }
 
+/* títulos de sección fuera de card (Ajustes): aire arriba para troceado claro,
+   pegados a su contenido por abajo (ratio ~3:1) */
+.section-title {
+  margin: 8px 6px 8px;
+}
+
+.section-title:first-of-type {
+  margin-top: 0;
+}
+
 .row {
   display: flex;
   align-items: center;
@@ -467,13 +477,19 @@ input[type='month'].input {
 }
 
 .cat-chip span {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--ink-2);
   max-width: 100%;
-  white-space: nowrap;
+  line-height: 1.15;
+  /* dos líneas con guiones antes que truncar: nada de 'Supermerca' */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
 .cat-chip.selected {
@@ -825,6 +841,12 @@ input[type='month'].input {
   padding: 28px 24px 30px;
 }
 
+/* empty state como única pieza de la pantalla: centrado vertical real */
+.empty-page .empty {
+  min-height: 52dvh;
+  justify-content: center;
+}
+
 /* solo la ilustración (hija directa): que el margen no se cuele en los
    iconos de los botones de dentro — el famoso '+' descentrado */
 .empty > svg {
@@ -965,9 +987,11 @@ input[type='month'].input {
 }
 
 .color-dots {
-  display: flex;
-  gap: 9px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  gap: 10px;
+  max-width: 250px;
 }
 
 .color-dot {

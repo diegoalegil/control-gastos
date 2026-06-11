@@ -135,10 +135,10 @@ export default function App() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={tab}
-          initial={{ opacity: 0, y: 7 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.16 }}
+          exit={{ opacity: 0, transition: { duration: 0.1 } }}
+          transition={{ type: 'spring', stiffness: 480, damping: 42 }}
         >
           {tab === 'resumen' && (
             <Resumen categories={cats} catMap={catMap} onAdd={() => setSheet({ kind: 'tx' })} />
@@ -213,7 +213,7 @@ export default function App() {
             <PersonalSetup
               onDone={(n) => {
                 closeSheet()
-                notify(n > 0 ? `Listo · ${recurrentesMsg(n)}` : 'Configuración aplicada')
+                if (n >= 0) notify(n > 0 ? `Listo · ${recurrentesMsg(n)}` : 'Configuración aplicada')
               }}
             />
           </Sheet>

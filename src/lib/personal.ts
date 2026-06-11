@@ -52,12 +52,14 @@ export interface FixedItem {
   financed?: boolean
   /** Cuotas conocidas de antemano, pre-rellenadas en el asistente */
   defaultInstallments?: number
+  /** Nombres antiguos del item: evita duplicados al re-aplicar tras un renombrado */
+  aka?: string[]
 }
 
 // el ritual del día 1: entran los 800 €, salen 50 € al S&P 500 y se paga Vodafone
 export const FIXED_ITEMS: FixedItem[] = [
-  { key: 'inv', label: 'Inversión (parte fija)', categoryName: 'Inversión', iconId: 'sp500', type: 'ingreso', day: 1, defaultCents: 80000 },
-  { key: 'sp500', label: 'Aportación S&P 500', categoryName: 'Ahorro e inversión', iconId: 'sp500', type: 'gasto', day: 1, defaultCents: 5000 },
+  { key: 'inv', label: 'Inversión fija', categoryName: 'Inversión', iconId: 'sp500', type: 'ingreso', day: 1, defaultCents: 80000, aka: ['Inversión (parte fija)'] },
+  { key: 'sp500', label: 'S&P 500', categoryName: 'Ahorro e inversión', iconId: 'sp500', type: 'gasto', day: 1, defaultCents: 5000, aka: ['Aportación S&P 500'] },
   // factura Vodafone 26,04 € — Diego quiere fijos sin decimales, redondeo hacia arriba
   { key: 'movil', label: 'Líneas Vodafone', categoryName: 'Móvil', iconId: 'vodafone', type: 'gasto', day: 1, defaultCents: 2700 },
   { key: 'netflix', label: 'Netflix', categoryName: 'Suscripciones', iconId: 'netflix', type: 'gasto', day: 1, defaultCents: 1000 },
@@ -68,10 +70,10 @@ export const FIXED_ITEMS: FixedItem[] = [
   { key: 'chatgpt', label: 'ChatGPT', categoryName: 'Suscripciones', iconId: 'chatgpt', type: 'gasto', day: 1, defaultCents: 2300 },
   { key: 'gym', label: 'Gimnasio', categoryName: 'Gimnasio', iconId: 'gym', type: 'gasto', day: 1, defaultCents: 5400 },
   // TV Samsung QLED: cuota real 28,11 € (→29 redondeado), 10 cuotas desde junio
-  { key: 'fintv', label: 'Financiación TV (Samsung QLED)', categoryName: 'Financiación', iconId: 'tv', type: 'gasto', day: 1, financed: true, defaultCents: 2900, defaultInstallments: 10 },
+  { key: 'fintv', label: 'TV Samsung QLED', categoryName: 'Financiación', iconId: 'tv', type: 'gasto', day: 1, financed: true, defaultCents: 2900, defaultInstallments: 10, aka: ['Financiación TV (Samsung QLED)', 'Financiación TV'] },
   // iPhone 17 Pro Max: cuota real 54,12 € (→55 redondeado) × 24; canon digital
   // 3,48 € + gestión 13,27 € van como pago único en la primera factura
-  { key: 'finmovil', label: 'Financiación iPhone 17 Pro Max', categoryName: 'Financiación', iconId: 'iphone', type: 'gasto', day: 1, financed: true, defaultCents: 5500, defaultInstallments: 24 },
+  { key: 'finmovil', label: 'iPhone 17 Pro Max', categoryName: 'Financiación', iconId: 'iphone', type: 'gasto', day: 1, financed: true, defaultCents: 5500, defaultInstallments: 24, aka: ['Financiación iPhone 17 Pro Max', 'Financiación iPhone', 'Financiación móvil'] },
 ]
 
 export const SAVINGS_RATE = 0.1
@@ -120,9 +122,14 @@ export async function applyPersonalPlan(
     const start = currentMonth()
 
     for (const item of FIXED_ITEMS) {
-      const existingRule = ruleByNote.get(item.label.toLowerCase())
+      const names = [item.label, ...(item.aka ?? [])].map((s) => s.toLowerCase())
+      const existingRule = names.map((n) => ruleByNote.get(n)).find(Boolean)
       if (existingRule) {
-        if (!existingRule.iconId) await db.recurring.update(existingRule.id, { iconId: item.iconId })
+        // re-aplicar actualiza icono y unifica el nombre, nunca duplica
+        await db.recurring.update(existingRule.id, {
+          iconId: existingRule.iconId ?? item.iconId,
+          note: item.label,
+        })
         continue
       }
       const cents = amounts.get(item.key)

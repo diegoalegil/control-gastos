@@ -72,6 +72,37 @@ for (const vp of VIEWPORTS) {
     console.log(`  ! ${vp.name}: no se pudo sembrar datos`)
   }
 
+  // sheets (solo en el viewport canónico): capturas de VIEWPORT, no fullPage,
+  // para ver el layout real de keypad, selector de iconos y asistente
+  if (vp.name === 'iphone-14' || vp.name === 'iphone-se') {
+    await page.waitForTimeout(4300) // dejar morir la toast: capturas de sheet limpias
+    const shoot = (name) => page.screenshot({ path: `shots/${name}-${vp.name}.png` })
+    const closeSheet = async () => {
+      await page.mouse.click(vp.width / 2, 40) // backdrop
+      await page.waitForTimeout(350)
+    }
+
+    await page.getByRole('button', { name: 'Añadir movimiento' }).first().click()
+    await page.waitForTimeout(450)
+    await shoot('sheet-nuevo')
+    console.log(`  ✓ sheet-nuevo-${vp.name}`)
+    await closeSheet()
+
+    await page.getByRole('button', { name: 'Ajustes' }).first().click()
+    await page.waitForTimeout(350)
+    await page.getByRole('button', { name: /Añadir categoría/ }).click()
+    await page.waitForTimeout(450)
+    await shoot('sheet-categoria')
+    console.log(`  ✓ sheet-categoria-${vp.name}`)
+    await closeSheet()
+
+    await clickIfVisible(page, page.getByText('Configuración personal'))
+    await page.waitForTimeout(450)
+    await shoot('sheet-asistente')
+    console.log(`  ✓ sheet-asistente-${vp.name}`)
+    await closeSheet()
+  }
+
   await context.close()
 }
 

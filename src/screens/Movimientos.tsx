@@ -147,11 +147,13 @@ export function Movimientos({
             Nada coincide con tu búsqueda.
           </p>
         ) : (
-          <EmptyState
-            art={<IllusRecibo />}
-            title="Sin movimientos todavía"
-            caption="Pulsa el botón + para apuntar tu primer gasto o ingreso."
-          />
+          <div className="empty-page">
+            <EmptyState
+              art={<IllusRecibo />}
+              title="Sin movimientos todavía"
+              caption="Pulsa el botón + para apuntar tu primer gasto o ingreso."
+            />
+          </div>
         )
       )}
 
