@@ -29,7 +29,7 @@ type SheetState =
   | null
 
 const recurrentesMsg = (n: number) =>
-  n === 1 ? 'Se apuntó 1 movimiento recurrente' : `Se apuntaron ${n} movimientos recurrentes`
+  n === 1 ? '1 recurrente apuntado' : `${n} recurrentes apuntados`
 
 export default function App() {
   useTheme()
@@ -213,7 +213,7 @@ export default function App() {
             <PersonalSetup
               onDone={(n) => {
                 closeSheet()
-                notify(n > 0 ? `Configuración aplicada · ${recurrentesMsg(n).toLowerCase()}` : 'Configuración aplicada')
+                notify(n > 0 ? `Listo · ${recurrentesMsg(n)}` : 'Configuración aplicada')
               }}
             />
           </Sheet>

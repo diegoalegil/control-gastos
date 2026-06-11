@@ -7,9 +7,16 @@ const eur = new Intl.NumberFormat('es-ES', {
   useGrouping: 'always',
 } as unknown as Intl.NumberFormatOptions)
 
-/** Céntimos -> '1.234,56 €' */
+const eur0 = new Intl.NumberFormat('es-ES', {
+  style: 'currency',
+  currency: 'EUR',
+  maximumFractionDigits: 0,
+  useGrouping: 'always',
+} as unknown as Intl.NumberFormatOptions)
+
+/** Céntimos -> '1.234,56 €'; los importes enteros van limpios: '1.234 €' */
 export function formatCents(cents: number): string {
-  return eur.format(cents / 100)
+  return cents % 100 === 0 ? eur0.format(cents / 100) : eur.format(cents / 100)
 }
 
 /** Céntimos con signo explícito: '+1.200,00 €' / '−45,30 €' (signo menos tipográfico) */

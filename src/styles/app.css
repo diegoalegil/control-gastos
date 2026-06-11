@@ -1001,7 +1001,8 @@ input[type='month'].input {
   display: flex;
   align-items: center;
   gap: 14px;
-  white-space: nowrap;
+  max-width: calc(100vw - 40px);
+  text-align: center;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
 }
 
